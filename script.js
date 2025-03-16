@@ -3,6 +3,7 @@ const ctx = canvas.getContext('2d');
 const bullets = [];
 const enemies = [];
 let enemySpawnTimer = 0;
+let score = 0;
 
 // Nave del jugador
 const player = {
@@ -152,9 +153,15 @@ function checkCollisions() {
 
             if (hit) {
                 enemies.splice(i, 1);
+                score += 10;
+                updateScore();
                 bullets.splice(j, 1);
                 break;
             }
         }
     }
+}
+
+function updateScore() {
+    document.getElementById('score').textContent = 'Puntuación: ' + score;
 }
