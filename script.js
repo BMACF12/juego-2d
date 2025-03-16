@@ -1,6 +1,8 @@
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 const bullets = [];
+const enemies = [];
+let enemySpawnTimer = 0;
 
 // Nave del jugador
 const player = {
@@ -39,12 +41,24 @@ function update() {
 function gameLoop() {
     clearCanvas();
     update();
-    updateBullets();     // 👈 nuevo
+    updateBullets();
+    updateEnemies();
+
     drawPlayer();
-    drawBullets();       // 👈 nuevo
+    drawBullets();
+    drawEnemies();
+
+    checkCollisions();
+
+    // Generar enemigos cada 60 frames aprox.
+    enemySpawnTimer++;
+    if (enemySpawnTimer > 60) {
+        spawnEnemy();
+        enemySpawnTimer = 0;
+    }
+
     requestAnimationFrame(gameLoop);
 }
-
 
 gameLoop();
 
@@ -88,6 +102,59 @@ function updateBullets() {
     for (let i = bullets.length - 1; i >= 0; i--) {
         if (bullets[i].y + bullets[i].height < 0) {
             bullets.splice(i, 1);
+        }
+    }
+}
+
+function spawnEnemy() {
+    const size = 30;
+    const x = Math.random() * (canvas.width - size);
+    enemies.push({
+        x: x,
+        y: -size,
+        width: size,
+        height: size,
+        speed: 2,
+        color: 'red'
+    });
+}
+
+function drawEnemies() {
+    enemies.forEach(enemy => {
+        ctx.fillStyle = enemy.color;
+        ctx.fillRect(enemy.x, enemy.y, enemy.width, enemy.height);
+    });
+}
+
+function updateEnemies() {
+    enemies.forEach(enemy => enemy.y += enemy.speed);
+
+    // Eliminar enemigos que se salen de la pantalla
+    for (let i = enemies.length - 1; i >= 0; i--) {
+        if (enemies[i].y > canvas.height) {
+            enemies.splice(i, 1);
+        }
+    }
+}
+
+function checkCollisions() {
+    for (let i = enemies.length - 1; i >= 0; i--) {
+        for (let j = bullets.length - 1; j >= 0; j--) {
+            const enemy = enemies[i];
+            const bullet = bullets[j];
+
+            const hit = (
+                bullet.x < enemy.x + enemy.width &&
+                bullet.x + bullet.width > enemy.x &&
+                bullet.y < enemy.y + enemy.height &&
+                bullet.y + bullet.height > enemy.y
+            );
+
+            if (hit) {
+                enemies.splice(i, 1);
+                bullets.splice(j, 1);
+                break;
+            }
         }
     }
 }
