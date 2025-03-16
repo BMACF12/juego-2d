@@ -3,9 +3,6 @@ const ctx = canvas.getContext('2d');
 const bullets = [];
 const enemies = [];
 let enemySpawnTimer = 0;
-let score = 0;
-let vidas = 3;
-let gameOver = false;
 
 // Nave del jugador
 const player = {
@@ -68,9 +65,16 @@ function gameLoop() {
     requestAnimationFrame(gameLoop);
 }
 
-updateScore();
-updateVidas();
-gameLoop();
+function iniciarJuego() {
+    score = 0;
+    vidas = 3;
+    gameOver = false;
+    enemies.length = 0;
+    bullets.length = 0;
+    updateScore();
+    updateVidas();
+    gameLoop();
+}
 
 
 // Controles
@@ -206,3 +210,8 @@ function mostrarGameOver() {
     ctx.textAlign = 'center';
     ctx.fillText('GAME OVER', canvas.width / 2, canvas.height / 2);
 }
+
+document.getElementById('btn-jugar').addEventListener('click', () => {
+    document.getElementById('menu-inicio').style.display = 'none';
+    iniciarJuego();
+});
