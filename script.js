@@ -4,6 +4,8 @@ const bullets = [];
 const enemies = [];
 let enemySpawnTimer = 0;
 let score = 0;
+let vidas = 3;
+let gameOver = false;
 
 // Nave del jugador
 const player = {
@@ -40,6 +42,11 @@ function update() {
 
 // Bucle principal
 function gameLoop() {
+    if (gameOver) {
+        mostrarGameOver();
+        return;
+    }
+    
     clearCanvas();
     update();
     updateBullets();
@@ -50,7 +57,7 @@ function gameLoop() {
     drawEnemies();
 
     checkCollisions();
-
+    checkPlayerCollision();
     // Generar enemigos cada 60 frames aprox.
     enemySpawnTimer++;
     if (enemySpawnTimer > 60) {
@@ -61,7 +68,10 @@ function gameLoop() {
     requestAnimationFrame(gameLoop);
 }
 
+updateScore();
+updateVidas();
 gameLoop();
+
 
 // Controles
 document.addEventListener('keydown', (e) => {
@@ -75,8 +85,6 @@ document.addEventListener('keyup', (e) => {
     if (e.key === 'ArrowLeft') player.movingLeft = false;
     if (e.key === 'ArrowRight') player.movingRight = false;
 });
-
-
 
 function shoot() {
     bullets.push({
@@ -162,6 +170,39 @@ function checkCollisions() {
     }
 }
 
+function checkPlayerCollision() {
+    for (let i = enemies.length - 1; i >= 0; i--) {
+        const enemy = enemies[i];
+        const hit = (
+            player.x < enemy.x + enemy.width &&
+            player.x + player.width > enemy.x &&
+            player.y < enemy.y + enemy.height &&
+            player.y + player.height > enemy.y
+        );
+
+        if (hit) {
+            enemies.splice(i, 1);
+            vidas--;
+            updateVidas();
+
+            if (vidas <= 0) {
+                gameOver = true;
+            }
+        }
+    }
+}
+
 function updateScore() {
     document.getElementById('score').textContent = 'Puntuación: ' + score;
+}
+
+function updateVidas() {
+    document.getElementById('vidas').textContent = 'Vidas: ' + vidas;
+}
+
+function mostrarGameOver() {
+    ctx.fillStyle = 'red';
+    ctx.font = '36px Arial';
+    ctx.textAlign = 'center';
+    ctx.fillText('GAME OVER', canvas.width / 2, canvas.height / 2);
 }
