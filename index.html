@@ -5,13 +5,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Space Shooter</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
-    <div id="score">Puntuación: 0</div>
-    <div id="highscore">Record: 0</div>
-    <div id="vidas">Vidas: 3</div>
+    <div class="hud">
+        <div class="hud-item">
+            <i class="fas fa-star"></i>
+            <span id="score">0</span>
+        </div>
+        <div class="hud-item">
+            <i class="fas fa-heart"></i>
+            <span id="vidas">3</span>
+        </div>
+        <div class="hud-item">
+            <i class="fas fa-trophy"></i>
+            <span id="highscore">0</span>
+        </div>
+    </div>
+
     <canvas id="gameCanvas" width="480" height="640"></canvas>
-    
     <div id="menu-inicio" class="pantalla-inicio">
         <h1>Space Shooter</h1>
         <button id="btn-jugar">JUGAR</button>

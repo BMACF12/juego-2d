@@ -221,13 +221,13 @@ function checkPlayerCollision() {
 }
 
 function updateScore() {
-    document.getElementById('score').textContent = 'Puntuación: ' + score;
+    document.getElementById('score').textContent = score;
     revisarDificultad();
     updateHighScore();
 }
 
 function updateVidas() {
-    document.getElementById('vidas').textContent = 'Vidas: ' + vidas;
+    document.getElementById('vidas').textContent = vidas;
 }
 
 function mostrarGameOver() {
@@ -307,5 +307,5 @@ function updateHighScore() {
         highScore = score;
         localStorage.setItem('highScore', highScore);
     }
-    document.getElementById('highscore').textContent = 'Record: ' + highScore;
+    document.getElementById('highscore').textContent = highScore;
 }
