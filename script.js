@@ -5,6 +5,7 @@ const sonidoGameOver = new Audio('assets/gameover.wav');
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 const bullets = [];
+const enemyBullets = [];
 const enemies = [];
 let enemySpawnTimer = 0;
 
@@ -47,19 +48,22 @@ function gameLoop() {
         mostrarGameOver();
         return;
     }
-    
+
     clearCanvas();
     update();
     updateBullets();
     updateEnemies();
+    updateEnemyBullets();         // 👈 nuevo
 
     drawPlayer();
     drawBullets();
     drawEnemies();
+    drawEnemyBullets();          // 👈 nuevo
 
     checkCollisions();
     checkPlayerCollision();
-    // Generar enemigos cada 60 frames aprox.
+    checkPlayerBulletCollision(); // 👈 nuevo
+
     enemySpawnTimer++;
     if (enemySpawnTimer > 60) {
         spawnEnemy();
@@ -146,9 +150,16 @@ function drawEnemies() {
 }
 
 function updateEnemies() {
-    enemies.forEach(enemy => enemy.y += enemy.speed);
+    enemies.forEach(enemy => {
+        enemy.y += enemy.speed;
 
-    // Eliminar enemigos que se salen de la pantalla
+        // Probabilidad de disparar (ajusta según dificultad)
+        if (Math.random() < 0.005) {
+            shootEnemy(enemy);
+        }
+    });
+
+    // Eliminar los que salen
     for (let i = enemies.length - 1; i >= 0; i--) {
         if (enemies[i].y > canvas.height) {
             enemies.splice(i, 1);
@@ -224,3 +235,54 @@ document.getElementById('btn-jugar').addEventListener('click', () => {
     document.getElementById('menu-inicio').style.display = 'none';
     iniciarJuego();
 });
+
+function shootEnemy(enemy) {
+    enemyBullets.push({
+        x: enemy.x + enemy.width / 2 - 2,
+        y: enemy.y + enemy.height,
+        width: 4,
+        height: 10,
+        speed: 4,
+        color: 'orange'
+    });
+}
+
+function drawEnemyBullets() {
+    enemyBullets.forEach(bullet => {
+        ctx.fillStyle = bullet.color;
+        ctx.fillRect(bullet.x, bullet.y, bullet.width, bullet.height);
+    });
+}
+
+function updateEnemyBullets() {
+    enemyBullets.forEach(bullet => bullet.y += bullet.speed);
+
+    // Eliminar las que salen
+    for (let i = enemyBullets.length - 1; i >= 0; i--) {
+        if (enemyBullets[i].y > canvas.height) {
+            enemyBullets.splice(i, 1);
+        }
+    }
+}
+
+function checkPlayerBulletCollision() {
+    for (let i = enemyBullets.length - 1; i >= 0; i--) {
+        const bullet = enemyBullets[i];
+        const hit = (
+            bullet.x < player.x + player.width &&
+            bullet.x + bullet.width > player.x &&
+            bullet.y < player.y + player.height &&
+            bullet.y + bullet.height > player.y
+        );
+
+        if (hit) {
+            enemyBullets.splice(i, 1);
+            vidas--;
+            updateVidas();
+
+            if (vidas <= 0) {
+                gameOver = true;
+            }
+        }
+    }
+}
