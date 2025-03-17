@@ -1,3 +1,7 @@
+const sonidoDisparo = new Audio('assets/shoot.wav');
+const sonidoExplosion = new Audio('assets/explosion.wav');
+const sonidoGameOver = new Audio('assets/gameover.wav');
+
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 const bullets = [];
@@ -99,6 +103,8 @@ function shoot() {
         speed: 7,
         color: 'yellow'
     });
+    sonidoDisparo.currentTime = 0;
+    sonidoDisparo.play();
 }
 
 function drawBullets() {
@@ -164,6 +170,8 @@ function checkCollisions() {
             );
 
             if (hit) {
+                sonidoExplosion.currentTime = 0;
+                sonidoExplosion.play();
                 enemies.splice(i, 1);
                 score += 10;
                 updateScore();
@@ -205,6 +213,7 @@ function updateVidas() {
 }
 
 function mostrarGameOver() {
+    sonidoGameOver.play();
     ctx.fillStyle = 'red';
     ctx.font = '36px Arial';
     ctx.textAlign = 'center';
