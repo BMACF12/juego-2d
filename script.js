@@ -7,6 +7,7 @@ const ctx = canvas.getContext('2d');
 const bullets = [];
 const enemyBullets = [];
 const enemies = [];
+let highScore = localStorage.getItem('highScore') || 0;
 let enemySpawnTimer = 0;
 let nivel = 1;
 let velocidadEnemigo = 2;
@@ -84,6 +85,7 @@ function iniciarJuego() {
     bullets.length = 0;
     updateScore();
     updateVidas();
+    updateHighScore();
     gameLoop();
 }
 
@@ -221,6 +223,7 @@ function checkPlayerCollision() {
 function updateScore() {
     document.getElementById('score').textContent = 'Puntuación: ' + score;
     revisarDificultad();
+    updateHighScore();
 }
 
 function updateVidas() {
@@ -297,4 +300,12 @@ function revisarDificultad() {
         velocidadEnemigo += 0.5;
         if (spawnRate > 30) spawnRate -= 5;
     }
+}
+
+function updateHighScore() {
+    if (score > highScore) {
+        highScore = score;
+        localStorage.setItem('highScore', highScore);
+    }
+    document.getElementById('highscore').textContent = 'Record: ' + highScore;
 }

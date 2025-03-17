@@ -73,3 +73,16 @@ canvas {
 #btn-jugar:hover {
     background-color: #0056b3;
 }
+
+#highscore {
+    position: absolute;
+    top: 40px;
+    left: 10px;
+    color: yellow;
+    font-size: 16px;
+    font-family: 'Arial', sans-serif;
+    z-index: 10;
+    background: rgba(0, 0, 0, 0.5);
+    padding: 4px 10px;
+    border-radius: 5px;
+}
