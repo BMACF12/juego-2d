@@ -8,6 +8,9 @@ const bullets = [];
 const enemyBullets = [];
 const enemies = [];
 let enemySpawnTimer = 0;
+let nivel = 1;
+let velocidadEnemigo = 2;
+let spawnRate = 60; // menor = más enemigos
 
 // Nave del jugador
 const player = {
@@ -65,7 +68,7 @@ function gameLoop() {
     checkPlayerBulletCollision(); // 👈 nuevo
 
     enemySpawnTimer++;
-    if (enemySpawnTimer > 60) {
+    if (enemySpawnTimer > spawnRate) {
         spawnEnemy();
         enemySpawnTimer = 0;
     }
@@ -137,7 +140,7 @@ function spawnEnemy() {
         y: -size,
         width: size,
         height: size,
-        speed: 2,
+        speed: velocidadEnemigo,
         color: 'red'
     });
 }
@@ -217,6 +220,7 @@ function checkPlayerCollision() {
 
 function updateScore() {
     document.getElementById('score').textContent = 'Puntuación: ' + score;
+    revisarDificultad();
 }
 
 function updateVidas() {
@@ -284,5 +288,13 @@ function checkPlayerBulletCollision() {
                 gameOver = true;
             }
         }
+    }
+}
+
+function revisarDificultad() {
+    if (score % 100 === 0 && score !== 0) {
+        nivel++;
+        velocidadEnemigo += 0.5;
+        if (spawnRate > 30) spawnRate -= 5;
     }
 }
