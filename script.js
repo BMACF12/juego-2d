@@ -12,6 +12,8 @@ let enemySpawnTimer = 0;
 let nivel = 1;
 let velocidadEnemigo = 2;
 let spawnRate = 60; // menor = más enemigos
+let enemyBulletSpeed = 4;
+let playerBulletSpeed = 7; // puedes subir esto si lo necesitas
 
 // Nave del jugador
 const player = {
@@ -109,7 +111,7 @@ function shoot() {
         y: player.y,
         width: 4,
         height: 10,
-        speed: 7,
+        speed: playerBulletSpeed,
         color: 'yellow'
     });
     sonidoDisparo.currentTime = 0;
@@ -249,7 +251,7 @@ function shootEnemy(enemy) {
         y: enemy.y + enemy.height,
         width: 4,
         height: 10,
-        speed: 4,
+        speed: enemyBulletSpeed, // ✅ velocidad dinámica
         color: 'orange'
     });
 }
@@ -299,6 +301,14 @@ function revisarDificultad() {
         nivel++;
         velocidadEnemigo += 0.5;
         if (spawnRate > 30) spawnRate -= 5;
+
+        // 📈 Aumentar velocidad de balas enemigas también
+        enemyBulletSpeed += 0.5;
+
+        // ✅ Puedes mejorar también el disparo del jugador (opcional)
+        if (nivel % 3 === 0) {
+            playerBulletSpeed += 1;
+        }
     }
 }
 
