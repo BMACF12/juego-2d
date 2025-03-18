@@ -82,9 +82,17 @@ function gameLoop() {
 function iniciarJuego() {
     score = 0;
     vidas = 3;
+    nivel = 1;
+    velocidadEnemigo = 2;
+    spawnRate = 60;
+    enemyBulletSpeed = 4;
+    playerBulletSpeed = 7;
     gameOver = false;
+
     enemies.length = 0;
     bullets.length = 0;
+    enemyBullets.length = 0;
+
     updateScore();
     updateVidas();
     updateHighScore();
