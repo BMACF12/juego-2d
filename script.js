@@ -14,6 +14,9 @@ let velocidadEnemigo = 2;
 let spawnRate = 60; // menor = más enemigos
 let enemyBulletSpeed = 4;
 let playerBulletSpeed = 7; // puedes subir esto si lo necesitas
+let isPaused = false;
+let pauseFrame = null;
+
 
 // Nave del jugador
 const player = {
@@ -52,6 +55,11 @@ function update() {
 function gameLoop() {
     if (gameOver) {
         mostrarGameOver();
+        return;
+    }
+
+    if (isPaused) {
+        mostrarPausa();
         return;
     }
 
@@ -333,3 +341,31 @@ document.getElementById('btn-reintentar').addEventListener('click', () => {
     document.getElementById('pantalla-gameover').style.display = 'none';
     iniciarJuego();
 });
+
+function togglePausa() {
+    isPaused = !isPaused;
+    document.getElementById('pantalla-pausa').style.display = isPaused ? 'flex' : 'none';
+
+    if (!isPaused) {
+        requestAnimationFrame(gameLoop);  // Reanuda el loop si se reanuda
+    }
+}
+
+function mostrarPausa() {
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.6)';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = 'white';
+    ctx.font = '36px Arial';
+    ctx.textAlign = 'center';
+    ctx.fillText('PAUSA', canvas.width / 2, canvas.height / 2);
+}
+
+document.addEventListener('keydown', (e) => {
+    if (e.key === ' ' || e.code === 'Space') shoot();
+    if (e.key === 'ArrowLeft') player.movingLeft = true;
+    if (e.key === 'ArrowRight') player.movingRight = true;
+    if (e.key === 'Escape') togglePausa(); // ✅ ahora pausa con tecla ESC
+
+});
+
+document.getElementById('btn-reanudar').addEventListener('click', togglePausa);

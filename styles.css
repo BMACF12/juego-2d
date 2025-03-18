@@ -126,3 +126,39 @@ canvas {
 #btn-reintentar:hover {
     background-color: #218838;
 }
+
+.pantalla-pausa {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.85);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 40;
+    color: white;
+    font-family: Arial, sans-serif;
+}
+
+.pantalla-pausa h1 {
+    font-size: 42px;
+    margin-bottom: 20px;
+}
+
+#btn-reanudar {
+    padding: 12px 24px;
+    font-size: 18px;
+    background-color: #ffc107;
+    color: black;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+#btn-reanudar:hover {
+    background-color: #e0a800;
+}
