@@ -212,11 +212,12 @@ function checkPlayerCollision() {
 
         if (hit) {
             enemies.splice(i, 1);
-            vidas--;
+            if (vidas > 0) vidas--;
             updateVidas();
 
-            if (vidas <= 0) {
+            if (vidas <= 0 && !gameOver) {
                 gameOver = true;
+                break; 
             }
         }
     }
@@ -229,6 +230,7 @@ function updateScore() {
 }
 
 function updateVidas() {
+    if (vidas < 0) vidas = 0;
     document.getElementById('vidas').textContent = vidas;
 }
 
@@ -286,11 +288,12 @@ function checkPlayerBulletCollision() {
 
         if (hit) {
             enemyBullets.splice(i, 1);
-            vidas--;
+            if (vidas > 0) vidas--;
             updateVidas();
 
-            if (vidas <= 0) {
+            if (vidas <= 0 && !gameOver) {
                 gameOver = true;
+                break;
             }
         }
     }
