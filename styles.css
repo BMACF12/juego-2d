@@ -84,3 +84,45 @@ canvas {
 .hud-item:nth-child(3) i {
     color: yellow;
 }
+
+.pantalla-gameover {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.9);
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 30;
+    font-family: Arial, sans-serif;
+}
+
+.pantalla-gameover h1 {
+    font-size: 48px;
+    margin-bottom: 10px;
+    color: red;
+}
+
+.pantalla-gameover p {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+#btn-reintentar {
+    padding: 12px 24px;
+    font-size: 18px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+#btn-reintentar:hover {
+    background-color: #218838;
+}

@@ -236,10 +236,8 @@ function updateVidas() {
 
 function mostrarGameOver() {
     sonidoGameOver.play();
-    ctx.fillStyle = 'red';
-    ctx.font = '36px Arial';
-    ctx.textAlign = 'center';
-    ctx.fillText('GAME OVER', canvas.width / 2, canvas.height / 2);
+    document.getElementById('pantalla-gameover').style.display = 'flex';
+    document.getElementById('final-score').textContent = `Tu puntuación: ${score}`;
 }
 
 document.getElementById('btn-jugar').addEventListener('click', () => {
@@ -322,3 +320,8 @@ function updateHighScore() {
     }
     document.getElementById('highscore').textContent = highScore;
 }
+
+document.getElementById('btn-reintentar').addEventListener('click', () => {
+    document.getElementById('pantalla-gameover').style.display = 'none';
+    iniciarJuego();
+});
